@@ -1,0 +1,29 @@
+{
+    "name": "tholabs/urimanage",
+    "description": "PSR-7 compliant URI manager to parse, modify and format",
+    "type": "library",
+    "authors": [
+        {
+            "name": "David Beuchert",
+            "email": "mail@dbeuchert.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tholabs\\UriManage\\": "src"
+        }
+    },
+    "require": {
+        "psr/http-message": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "php-http/psr7-integration-tests": "@dev"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:php-http/psr7-integration-tests.git"
+        }
+    ]
+}
