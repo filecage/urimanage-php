@@ -56,12 +56,14 @@
          * @return \Generator
          */
         function provideEncodablePathStrings () : \Generator {
+            // Also ensure that encoded parts are lowercase but the original path is still treated case-sensitive
             yield '/foo bar/' => ['/foo bar/', '/foo%20bar/'];
-            yield '/foo+bar/ba$/bür/' => ['/foo+bar/ba$/bür/', '/foo%2Bbar/ba%24/b%C3%BCr/'];
+            yield '/foo+bar/ba$/bür/' => ['/FOO+bar/BA$/bür/', '/FOO%2bbar/BA%24/b%c3%bcr/'];
 
             // Prevent double encoding -> expect the same output
             yield '/foo%20bar/' => ['/foo%20bar/', '/foo%20bar/'];
-            yield '/foo%2Fbar/baz/' => ['/foo%2Fbar/baz/', '/foo%2Fbar/baz/'];
+            yield '/foo%2fbar/baz/' => ['/foo%2fbar/baz/', '/foo%2fbar/baz/'];
+            yield '/foo%2Fbar/baz/' => ['/foo%2Fbar/baz/', '/foo%2fbar/baz/'];
         }
 
     }

@@ -77,8 +77,20 @@
          */
         function __toString () : string {
             return ($this->isAbsolute() ? Symbol::PATH_SEPARATOR : '')
-                .  implode(Symbol::PATH_SEPARATOR, array_map('rawurlencode', $this->parts))
+                .  implode(Symbol::PATH_SEPARATOR, array_map([$this, 'encodePathPart'], $this->parts))
                 .  ($this->hasTail() ? Symbol::PATH_SEPARATOR : '')
             ;
+        }
+
+        /**
+         * @param string $part
+         * @return string
+         */
+        private function encodePathPart (string $part) : string {
+            // To ensure compliance to php-http/psr7-integration-tests, we have to lowercase all replaced url entities
+            // PSR-7 itself does not specify this and allows upper- as well as lowercase
+            return preg_replace_callback('/%[0-9A-F]{2}/', function(array $urlEntity){
+                return strtolower($urlEntity[0]);
+            }, rawurlencode($part));
         }
     }
