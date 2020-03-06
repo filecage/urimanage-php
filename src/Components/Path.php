@@ -33,6 +33,10 @@
             $hasTail = ($path[-1] ?? null) === Uri::URL_PARAMETER_PATH_SEPARATOR;
             $parts = explode(Uri::URL_PARAMETER_PATH_SEPARATOR, trim($path, Uri::URL_PARAMETER_PATH_SEPARATOR));
 
+            // We're decoding here to prevent double-encoding - a safer solution would be to never encode implicitly
+            // but PSR-7 requires us to output the path encoded following RFC 3986
+            $parts = array_map('rawurldecode', $parts);
+
             return new static($absolute, $hasTail, ...$parts);
         }
 
@@ -73,7 +77,7 @@
          */
         function __toString () : string {
             return ($this->isAbsolute() ? Uri::URL_PARAMETER_PATH_SEPARATOR : '')
-                .  implode(Uri::URL_PARAMETER_PATH_SEPARATOR, $this->parts)
+                .  implode(Uri::URL_PARAMETER_PATH_SEPARATOR, array_map('rawurlencode', $this->parts))
                 .  ($this->hasTail() ? Uri::URL_PARAMETER_PATH_SEPARATOR : '')
             ;
         }
