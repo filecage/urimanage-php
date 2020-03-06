@@ -2,6 +2,7 @@
 
     namespace Tholabs\UriManage\Components;
 
+    use Tholabs\UriManage\Constants\Symbol;
     use Tholabs\UriManage\Uri;
 
     /**
@@ -28,10 +29,10 @@
          * @param string $path
          * @return Path
          */
-        static function fromString (string $path) : Path {
-            $absolute = ($path[0] ?? null) === Uri::URL_PARAMETER_PATH_SEPARATOR;
-            $hasTail = ($path[-1] ?? null) === Uri::URL_PARAMETER_PATH_SEPARATOR;
-            $parts = explode(Uri::URL_PARAMETER_PATH_SEPARATOR, trim($path, Uri::URL_PARAMETER_PATH_SEPARATOR));
+        static function createFromString (string $path) : Path {
+            $absolute = ($path[0] ?? null) === Symbol::PATH_SEPARATOR;
+            $hasTail = ($path[-1] ?? null) === Symbol::PATH_SEPARATOR;
+            $parts = explode(Symbol::PATH_SEPARATOR, trim($path, Symbol::PATH_SEPARATOR));
 
             // We're decoding here to prevent double-encoding - a safer solution would be to never encode implicitly
             // but PSR-7 requires us to output the path encoded following RFC 3986
@@ -76,9 +77,9 @@
          * @return string
          */
         function __toString () : string {
-            return ($this->isAbsolute() ? Uri::URL_PARAMETER_PATH_SEPARATOR : '')
-                .  implode(Uri::URL_PARAMETER_PATH_SEPARATOR, array_map('rawurlencode', $this->parts))
-                .  ($this->hasTail() ? Uri::URL_PARAMETER_PATH_SEPARATOR : '')
+            return ($this->isAbsolute() ? Symbol::PATH_SEPARATOR : '')
+                .  implode(Symbol::PATH_SEPARATOR, array_map('rawurlencode', $this->parts))
+                .  ($this->hasTail() ? Symbol::PATH_SEPARATOR : '')
             ;
         }
     }
