@@ -30,8 +30,14 @@
          */
         static function createFromString (string $path) : Path {
             $absolute = ($path[0] ?? null) === Symbol::PATH_SEPARATOR;
-            $hasTail = strlen($path) > 1 && ($path[-1] ?? null) === Symbol::PATH_SEPARATOR;
-            $parts = strtok($path, Symbol::PATH_SEPARATOR) ?: [];
+            $hasTail = ($path[-1] ?? null) === Symbol::PATH_SEPARATOR;
+            $parts = explode(Symbol::PATH_SEPARATOR, trim($path, Symbol::PATH_SEPARATOR));
+
+            if (strlen($path) <= 1) {
+                $hasTail = false; // Path strings with 1 character or less can not have tails
+                $parts = $parts === [''] ? [] : $parts; // If there is only a slash, there are no parts
+            }
+
 
             // We're decoding here to prevent double-encoding - a safer solution would be to never encode implicitly
             // but PSR-7 requires us to output the path encoded following RFC 3986
