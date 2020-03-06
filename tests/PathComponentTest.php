@@ -7,6 +7,24 @@
 
     class PathComponentTest extends TestCase {
 
+        function testExpectsEmptyPath () {
+            $path = Path::createFromString('');
+
+            $this->assertFalse($path->isAbsolute(), 'Empty path is expected to be relative');
+            $this->assertFalse($path->hasTail(), 'Empty path is expected to have no tail');
+            $this->assertEmpty($path->getParts(), 'Empty path is expected to have no parts');
+            $this->assertSame('', (string) $path, 'Empty path is expected to be empty string');
+        }
+
+        function testExpectsRootPath () {
+            $path = Path::createFromString('/');
+
+            $this->assertTrue($path->isAbsolute(), 'Root path is expected to be absolute');
+            $this->assertFalse($path->hasTail(), 'Root path is expected to have no tail');
+            $this->assertEmpty($path->getParts(), 'Root path is expected to have no parts');
+            $this->assertSame('/', (string) $path, 'Root path is expected to be single slash string');
+        }
+
         /**
          * @param string $path
          * @param bool $isAbsolute
