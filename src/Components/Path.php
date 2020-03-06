@@ -3,7 +3,6 @@
     namespace Tholabs\UriManage\Components;
 
     use Tholabs\UriManage\Constants\Symbol;
-    use Tholabs\UriManage\Uri;
 
     /**
      * @internal
