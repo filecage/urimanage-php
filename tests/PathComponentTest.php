@@ -14,7 +14,7 @@
          * @dataProvider providePathStrings
          */
         function testExpectsOutputToBeInput (string $path, bool $isAbsolute, bool $hasTail) {
-            $pathComponent = Path::fromString($path);
+            $pathComponent = Path::createFromString($path);
 
             if ($isAbsolute === true) {
                 $this->assertTrue($pathComponent->isAbsolute(), 'Path was expected to be parsed as absolute');
@@ -49,7 +49,7 @@
          * @dataProvider provideEncodablePathStrings
          */
         function testExpectsPathStringsToBeUrlEncoded (string $path, string $expectedOutput) {
-            $this->assertSame($expectedOutput, (string) Path::fromString($path), 'Output encoding was not as expected');
+            $this->assertSame($expectedOutput, (string) Path::createFromString($path), 'Output encoding was not as expected');
         }
 
         /**
