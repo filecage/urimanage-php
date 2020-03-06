@@ -22,6 +22,12 @@
                 $this->assertFalse($pathComponent->isAbsolute(), 'Path was expected to be parsed as relative');
             }
 
+            if ($hasTail === true) {
+                $this->assertTrue($pathComponent->hasTail(), 'Path was expected to be parsed with tail');
+            } else {
+                $this->assertFalse($pathComponent->hasTail(), 'Path was expected to be parsed without tail');
+            }
+
             $this->assertSame($path, (string) $pathComponent);
         }
 
