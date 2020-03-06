@@ -27,6 +27,26 @@
 
         /**
          * @param string $path
+         * @param array $parts
+         * @dataProvider provideFalsyParameters
+         */
+        function testExpectsFalsyPathParametersToSurvive (string $path, array $parts) {
+            $pathComponent = Path::createFromString($path);
+            $this->assertSame($path, (string) $pathComponent);
+            $this->assertSame($parts, $pathComponent->getParts());
+        }
+
+        /**
+         * @return \Generator
+         */
+        function provideFalsyParameters () : \Generator {
+            yield '0' => ['0', ['0']];
+            yield '0/1/0/' => ['0/1/0', ['0', '1', '0']];
+            yield '0//0' => ['0//0', ['0', '', '0']];
+        }
+
+        /**
+         * @param string $path
          * @param bool $isAbsolute
          * @param bool $hasTail
          * @dataProvider providePathStrings
