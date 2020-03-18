@@ -2,6 +2,8 @@
 
     namespace Tholabs\UriManage\Components;
 
+    use Tholabs\UriManage\Constants\Symbol;
+
     class QueryParameter {
 
         /**
@@ -57,4 +59,20 @@
         function getValueAsInt () : int {
             return (int) $this->value;
         }
+
+        /**
+         * @return string
+         */
+        function __toString () : string {
+            $key = rawurlencode($this->key . (is_array($this->value) ? Symbol::QUERY_ARRAY_SUFFIX : ''));
+
+            if (is_array($this->value)) {
+                return implode(Symbol::QUERY_PAIR_SEPARATOR, array_map(function($value) use ($key){
+                    return $key . Symbol::QUERY_KEYVALUE_SEPARATOR . rawurlencode($value);
+                }, $this->value));
+            }
+
+            return $key . Symbol::QUERY_KEYVALUE_SEPARATOR . rawurlencode($this->value);
+        }
+
     }
