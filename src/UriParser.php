@@ -3,6 +3,7 @@
     namespace Tholabs\UriManage;
 
     use Tholabs\UriManage\Components\Path;
+    use Tholabs\UriManage\Components\Query;
     use Tholabs\UriManage\Constants\Component;
 
     /**
@@ -25,6 +26,9 @@
 
                 case Component::PATH:
                     return Path::createFromString($value);
+
+                case Component::QUERY:
+                    return Query::createFromString($value);
 
                 default:
                     return $value;
