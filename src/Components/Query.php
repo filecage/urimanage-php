@@ -4,6 +4,9 @@
 
     use Tholabs\UriManage\Constants\Symbol;
 
+    /**
+     * @internal
+     */
     class Query {
 
         /**
