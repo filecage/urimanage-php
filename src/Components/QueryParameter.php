@@ -31,13 +31,6 @@
         }
 
         /**
-         * @return bool
-         */
-        function isNull () : bool {
-            return $this->value === null;
-        }
-
-        /**
          * @return mixed
          */
         function getValuePlain () {
