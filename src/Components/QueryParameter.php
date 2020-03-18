@@ -71,8 +71,14 @@
 
             if (is_array($this->value)) {
                 return implode(Symbol::QUERY_PAIR_SEPARATOR, array_map(function($value) use ($key){
+                    if ($value === null) {
+                        return $key;
+                    }
+
                     return $key . Symbol::QUERY_KEYVALUE_SEPARATOR . rawurlencode($value);
                 }, $this->value));
+            } elseif ($this->value === null) {
+                return $key;
             }
 
             return $key . Symbol::QUERY_KEYVALUE_SEPARATOR . rawurlencode($this->value);

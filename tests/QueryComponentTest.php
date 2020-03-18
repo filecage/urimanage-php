@@ -40,21 +40,21 @@
         function provideParseableQueryStrings () : \Generator {
             yield 'simple parsing and sanitizing' => [
                 'foo=bar&baz=true&bax=1&blah=&blubb',
-                'foo=bar&baz=true&bax=1&blah=&blubb=',
+                'foo=bar&baz=true&bax=1&blah=&blubb',
                 [
                     'foo' => 'bar',
                     'baz' => 'true',
                     'bax' => '1',
                     'blah' => '',
-                    'blubb' => ''
+                    'blubb' => null
                 ]
             ];
 
             yield 'array list parsing' => [
                 'foo[]=bar&foo[]=baz&foo[]',
-                'foo%5B%5D=bar&foo%5B%5D=baz&foo%5B%5D=',
+                'foo%5B%5D=bar&foo%5B%5D=baz&foo%5B%5D',
                 [
-                    'foo' => ['bar', 'baz', '']
+                    'foo' => ['bar', 'baz', null]
                 ]
             ];
 

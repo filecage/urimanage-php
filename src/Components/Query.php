@@ -80,7 +80,10 @@
             foreach (explode(Symbol::QUERY_PAIR_SEPARATOR, $query) as $parameter) {
                 $exploded = explode(Symbol::QUERY_KEYVALUE_SEPARATOR, $parameter);
                 $key = rawurldecode($exploded[0]);
-                $value = rawurldecode($exploded[1] ?? '');
+                $value = $exploded[1] ?? null;
+                if ($value !== null) {
+                    $value = rawurldecode($value);
+                }
 
                 if (substr($key, -2) === Symbol::QUERY_ARRAY_SUFFIX) {
                     $key = substr($key, 0, -2);
