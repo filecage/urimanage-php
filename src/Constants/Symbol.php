@@ -11,4 +11,7 @@
 
         // Path symbols
         const PATH_SEPARATOR = '/';
+
+        // Other symbols
+        const FRAGMENT_SEPERATOR = '#';
     }
