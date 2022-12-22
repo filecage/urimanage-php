@@ -29,7 +29,7 @@
                 $this->assertSame($value, $parameter->getValuePlain());
             }
 
-            // Cross check
+            // Cross-Check
             $this->assertFalse($query->hasParameter('not_exists'));
             $this->assertNull($query->getParameter('not_exists'));
         }
