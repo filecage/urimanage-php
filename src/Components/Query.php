@@ -7,7 +7,7 @@
     /**
      * @internal
      */
-    class Query {
+    final class Query {
 
         /**
          * @var QueryParameter[]

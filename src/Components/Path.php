@@ -7,7 +7,7 @@
     /**
      * @internal
      */
-    class Path {
+    final class Path {
 
         /**
          * @var bool
