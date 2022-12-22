@@ -1,6 +1,6 @@
 <?php
 
-    namespace Tholabs\UriManage;
+    namespace UriManage;
 
     /**
      * @internal

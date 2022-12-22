@@ -1,8 +1,8 @@
 <?php
 
-    namespace Tholabs\UriManage\Components;
+    namespace UriManage\Components;
 
-    use Tholabs\UriManage\Constants\Symbol;
+    use UriManage\Constants\Symbol;
 
     /**
      * @internal

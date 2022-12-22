@@ -1,10 +1,10 @@
 <?php
 
-    namespace Tholabs\UriManage\Tests;
+    namespace UriManage\Tests;
 
     use PHPUnit\Framework\TestCase;
-    use Tholabs\UriManage\Components\Query;
-    use Tholabs\UriManage\Components\QueryParameter;
+    use UriManage\Components\Query;
+    use UriManage\Components\QueryParameter;
 
     class QueryComponentTest extends TestCase {
 

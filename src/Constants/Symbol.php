@@ -1,6 +1,6 @@
 <?php
 
-    namespace Tholabs\UriManage\Constants;
+    namespace UriManage\Constants;
 
     final class Symbol {
         // Query symbols

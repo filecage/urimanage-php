@@ -1,10 +1,10 @@
 <?php
 
-    namespace Tholabs\UriManage;
+    namespace UriManage;
 
-    use Tholabs\UriManage\Components\Path;
-    use Tholabs\UriManage\Components\Query;
-    use Tholabs\UriManage\Constants\Component;
+    use UriManage\Components\Path;
+    use UriManage\Components\Query;
+    use UriManage\Constants\Component;
 
     /**
      * @internal

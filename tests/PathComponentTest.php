@@ -1,9 +1,9 @@
 <?php
 
-    namespace Tholabs\UriManage\Tests;
+    namespace UriManage\Tests;
 
     use PHPUnit\Framework\TestCase;
-    use Tholabs\UriManage\Components\Path;
+    use UriManage\Components\Path;
 
     class PathComponentTest extends TestCase {
 

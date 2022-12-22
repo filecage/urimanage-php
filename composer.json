@@ -1,5 +1,5 @@
 {
-    "name": "tholabs/urimanage",
+    "name": "urimanage/urimanage",
     "description": "PSR-7 compliant URI manager to parse, modify and format",
     "type": "library",
     "authors": [
@@ -10,12 +10,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Tholabs\\UriManage\\": "src"
+            "UriManage\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tholabs\\UriManage\\Tests\\": "tests"
+            "UriManage\\Tests\\": "tests"
         }
     },
     "require": {
