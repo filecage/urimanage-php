@@ -119,10 +119,17 @@
         /**
          * Builds the path as-is, so without any normalisation applied
          * This might be dangerous in some cases, e.g. when allowing multiple slashes
-         * in a URI that has no authority part.
+         * in a URI that has no authority part
          *
-         * @see Path::compose
+         * (It would allow XSS or open redirects by omitting the scheme, but setting a new
+         * authority like `//malicious-website.com/foo/bar`).
+         *
+         * @see https://framework.zend.com/security/advisory/ZF2015-05.html
+         * @see https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-3257
+         * @see https://github.com/php-http/psr7-integration-tests/pull/54
+         *
          * @return string
+         * @see Path::compose
          */
         function composeUnsanitised () : string {
             return ($this->isAbsolute() ? Symbol::PATH_SEPARATOR : '')
