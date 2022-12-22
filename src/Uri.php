@@ -91,14 +91,14 @@
         /**
          * @return string
          */
-        function getHost () {
+        function getHost () : string {
             return $this->host ?? '';
         }
 
         /**
          * @return string
          */
-        function getPath () {
+        function getPath () : string {
             return (string) ($this->path ?? '');
         }
 
@@ -114,7 +114,7 @@
         /**
          * @return int|null
          */
-        function getPort () {
+        function getPort () : ?int {
             if ($this->isDefaultPortForScheme()) {
                 return null;
             }
