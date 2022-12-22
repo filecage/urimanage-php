@@ -154,19 +154,11 @@
 
 
         /**
-         * @param \Stringable|string|null $host
+         * @param string|null $host
          *
          * @return Uri
          */
         function withHost ($host) : Uri {
-            if (is_object($host)) {
-                if (!$host instanceof \Stringable) {
-                    throw new InvalidArgumentException("Invalid URI host type, got instance of `" . get_class($host) . "` which does not implement `Stringable` interface");
-                }
-
-                $host = (string) $host;
-            }
-
             if ($host !== null && !is_string($host)) {
                 throw new InvalidArgumentException("Invalid URI host type, expected string and got `" . gettype($host) . "`");
             }

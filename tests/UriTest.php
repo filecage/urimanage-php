@@ -35,28 +35,11 @@ class UriTest extends TestCase {
         ];
     }
 
-    function testExpectsUriToAcceptStringableAsHost () {
-        $uri = new Uri(null);
-        $uri = $uri->withHost(new _String('www.example.org'));
-
-        $this->assertSame('www.example.org', $uri->getHost());
-    }
-
-    function testExpectsExceptionWhenPassingNonStringableObject () {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid URI host type, got instance of `stdClass`');
-
-        $uri = new Uri(null);
-        /** @noinspection PhpParamsInspection */
-        $uri->withHost(new \stdClass());
-    }
-
     function testExpectsExceptionWhenPassingNonStringHostname () {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid URI host type, expected string and got `boolean`');
 
         $uri = new Uri(null);
-        /** @noinspection PhpParamsInspection */
         $uri->withHost(false);
     }
 
