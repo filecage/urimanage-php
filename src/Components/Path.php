@@ -35,7 +35,12 @@
         static function createFromString (string $path) : Path {
             $absolute = ($path[0] ?? null) === Symbol::PATH_SEPARATOR;
             $hasTail = ($path[-1] ?? null) === Symbol::PATH_SEPARATOR;
-            $parts = explode(Symbol::PATH_SEPARATOR, trim($path, Symbol::PATH_SEPARATOR));
+
+            // Remove leading and tailing path separators, but only exactly one (meaning we can't use PHP's `trim()`)
+            if ($absolute) $path = substr($path, 1);
+            if ($hasTail) $path = substr($path, 0, -1);
+
+            $parts = explode(Symbol::PATH_SEPARATOR, $path);
 
             if (strlen($path) <= 1) {
                 $fileExtension = ''; // No file extension present
@@ -112,13 +117,34 @@
         }
 
         /**
+         * Builds the path as-is, so without any normalisation applied
+         * This might be dangerous in some cases, e.g. when allowing multiple slashes
+         * in a URI that has no authority part.
+         *
+         * @see Path::compose
          * @return string
          */
-        function __toString () : string {
+        function composeUnsanitised () : string {
             return ($this->isAbsolute() ? Symbol::PATH_SEPARATOR : '')
                 .  implode(Symbol::PATH_SEPARATOR, array_map([$this, 'encodePathPart'], $this->parts))
                 .  ($this->hasTail() ? Symbol::PATH_SEPARATOR : '')
-            ;
+                ;
+        }
+
+        /**
+         * Builds the path and applies normalisation
+         *
+         * @return string
+         * @see Path::composeUnsanitised()
+         */
+        function compose () : string {
+            $path = $this->composeUnsanitised();
+
+            return preg_replace('/^([\/]+)/', '/', $path);
+        }
+
+        function __toString () : string {
+            return $this->compose();
         }
 
         /**

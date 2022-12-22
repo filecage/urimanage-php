@@ -58,19 +58,21 @@
          * @param array $parts
          * @dataProvider provideFalsyParameters
          */
-        function testExpectsFalsyPathParametersToSurvive (string $path, array $parts) {
+        function testExpectsFalsyPathParametersToSurvive (string $path, string $pathString, array $parts) {
             $pathComponent = Path::createFromString($path);
-            $this->assertSame($path, (string) $pathComponent);
-            $this->assertSame($parts, $pathComponent->getParts());
+            $this->assertSame($path, $pathComponent->composeUnsanitised(), 'Unsanitised string representation does not match path input');
+            $this->assertSame($pathString, (string) $pathComponent, 'Path string representation failed to match expectation');
+            $this->assertSame($parts, $pathComponent->getParts(), 'Path parts failed to match expectation');
         }
 
         /**
          * @return \Generator
          */
         function provideFalsyParameters () : \Generator {
-            yield '0' => ['0', ['0']];
-            yield '0/1/0/' => ['0/1/0', ['0', '1', '0']];
-            yield '0//0' => ['0//0', ['0', '', '0']];
+            yield '0' => ['0', '0', ['0']];
+            yield '0/1/0/' => ['0/1/0', '0/1/0', ['0', '1', '0']];
+            yield '0//0' => ['0//0', '0//0', ['0', '', '0']];
+            yield '//0' => ['//0', '/0', ['', '0']];
         }
 
         /**
