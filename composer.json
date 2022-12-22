@@ -13,17 +13,16 @@
             "Tholabs\\UriManage\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tholabs\\UriManage\\Tests\\": "tests"
+        }
+    },
     "require": {
         "psr/http-message": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0",
-        "php-http/psr7-integration-tests": "@dev"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:php-http/psr7-integration-tests.git"
-        }
-    ]
+        "phpunit/phpunit": "^9.0",
+        "php-http/psr7-integration-tests": "^1.2"
+    }
 }
