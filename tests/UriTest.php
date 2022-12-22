@@ -4,13 +4,12 @@ namespace UriManage\Tests;
 
 use PHPUnit\Framework\TestCase;
 use UriManage\Exceptions\UriException;
-use UriManage\Tests\Mocks\_String;
 use UriManage\Uri;
 
 class UriTest extends TestCase {
 
     /**
-     * @param string $invalidScheme
+     * @param string|bool $invalidScheme
      * @see https://www.ietf.org/rfc/rfc1738.txt [Section 2.1]
      *
      * @dataProvider provideInvalidSchemes
@@ -113,12 +112,11 @@ class UriTest extends TestCase {
      * This is just to complete missing test cases from the
      * PSR-7 integration tests. Most of the composition tests
      * are done using
-     * @param string $uri
+     * @param Uri $uri
      * @param string $expectedCompositionUri
      *
      * @dataProvider provideCompositionUris
      * @return void
-     * @throws UriException
      */
     function testExpectsUriComposition (Uri $uri, string $expectedCompositionUri) : void {
         $this->assertSame($uri->compose(), $expectedCompositionUri);
