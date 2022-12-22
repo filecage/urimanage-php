@@ -13,5 +13,6 @@
         const PATH_SEPARATOR = '/';
 
         // Other symbols
-        const FRAGMENT_SEPERATOR = '#';
+        const FRAGMENT_SEPARATOR = '#';
+        const FILE_EXTENSION_SEPARATOR = '.';
     }

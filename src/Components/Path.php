@@ -23,6 +23,10 @@
          * @var string[]
          */
         private $parts;
+        /**
+         * @var string
+         */
+        private $fileExtension;
 
         /**
          * @param string $path
@@ -34,8 +38,11 @@
             $parts = explode(Symbol::PATH_SEPARATOR, trim($path, Symbol::PATH_SEPARATOR));
 
             if (strlen($path) <= 1) {
+                $fileExtension = ''; // No file extension present
                 $hasTail = false; // Path strings with 1 character or less can not have tails
                 $parts = $parts === [''] ? [] : $parts; // If there is only a slash, there are no parts
+            } else {
+                $fileExtension = pathinfo($path, PATHINFO_EXTENSION);
             }
 
 
@@ -43,18 +50,20 @@
             // but PSR-7 requires us to output the path encoded following RFC 3986
             $parts = array_map('rawurldecode', $parts);
 
-            return new static($absolute, $hasTail, ...$parts);
+            return new static($absolute, $hasTail, $fileExtension, ...$parts);
         }
 
         /**
          * @param bool $absolute
          * @param bool $hasTail
+         * @param string $fileExtension
          * @param string ...$parts
          */
-        function __construct (bool $absolute, bool $hasTail, string ...$parts) {
+        function __construct (bool $absolute, bool $hasTail, string $fileExtension, string ...$parts) {
             $this->absolute = $absolute;
             $this->hasTail = $hasTail;
             $this->parts = $parts;
+            $this->fileExtension = $fileExtension;
         }
 
         /**
@@ -76,6 +85,30 @@
          */
         function getParts () : array {
             return $this->parts;
+        }
+
+        /**
+         * @return Path
+         */
+        function withFileExtensionRemoved () : Path {
+            $path = (string) $this;
+            $pathInfo = pathinfo($path);
+            $pathWithoutFileExtension = $pathInfo['dirname'] . Symbol::PATH_SEPARATOR . $pathInfo['filename'];
+            $pathWithoutFileExtension = trim($pathWithoutFileExtension, Symbol::FILE_EXTENSION_SEPARATOR);
+
+            // Remove leading slash if there was none before (pathinfo might add it)
+            if ($path[0] !== Symbol::PATH_SEPARATOR) {
+                $pathWithoutFileExtension = ltrim($pathWithoutFileExtension, Symbol::PATH_SEPARATOR);
+            }
+
+            return self::createFromString($pathWithoutFileExtension);
+        }
+
+        /**
+         * @return string
+         */
+        function getFileExtension () {
+            return $this->fileExtension;
         }
 
         /**

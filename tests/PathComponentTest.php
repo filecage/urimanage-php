@@ -27,6 +27,34 @@
 
         /**
          * @param string $path
+         * @param string $expectedFileExtension
+         * @param string $expectedWithoutFileExtension
+         *
+         * @dataProvider providePathsWithFileExtension
+         */
+        function testShouldParseFileExtension (string $path, string $expectedFileExtension, string $expectedWithoutFileExtension) {
+            $path = Path::createFromString($path);
+
+            $this->assertSame($expectedFileExtension, $path->getFileExtension());
+
+            $pathWithoutExtension = $path->withFileExtensionRemoved();
+            $this->assertEmpty($pathWithoutExtension->getFileExtension());
+            $this->assertSame($expectedWithoutFileExtension, (string) $pathWithoutExtension);
+        }
+
+        /**
+         * @return \Generator
+         */
+        function providePathsWithFileExtension () : \Generator {
+            yield 'foo.php' => ['foo.php', 'php', 'foo'];
+            yield 'bar/foo.php' => ['bar/foo.php', 'php', 'bar/foo'];
+            yield '/bar/foo.php' => ['/bar/foo.php', 'php', '/bar/foo'];
+            yield '/bar/foo' => ['/bar/foo', '', '/bar/foo'];
+            yield '/😎/😊.😉' => ['/😎/😊.😉', '😉', '/%f0%9f%98%8e/%f0%9f%98%8a'];
+        }
+
+        /**
+         * @param string $path
          * @param array $parts
          * @dataProvider provideFalsyParameters
          */
