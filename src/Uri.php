@@ -24,6 +24,7 @@
         protected bool $hasBaseUrlRemoved = false;
 
         /**
+         * @throws InvalidArgumentException
          * @throws UriException
          * @param string|Stringable|null $uri
          */
@@ -280,6 +281,7 @@
         }
 
         /**
+         * @throws InvalidArgumentException
          * @param string $fragment
          * @return static
          */
