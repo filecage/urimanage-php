@@ -21,7 +21,6 @@
         protected ?Query $query = null;
         protected ?string $fragment;
         protected ?string $originalUri;
-        protected ?Uri $baseUri;
         protected bool $hasBaseUrlRemoved = false;
 
         /**
