@@ -24,9 +24,8 @@
         protected bool $hasBaseUrlRemoved = false;
 
         /**
-         * @param string|Stringable|null $uri
-         *
          * @throws UriException
+         * @param string|Stringable|null $uri
          */
         function __construct (string|Stringable|null $uri) {
             if ($uri === null) {
@@ -42,7 +41,12 @@
 
             $this->originalUri = $uri;
             foreach ($uriComponents as $component => $value) {
-                $this->$component = UriParser::parse($component, $value);
+                match ($component) {
+                    Component::HOST => $this->host = UriParser::parseHost($value),
+                    Component::PATH => $this->path = UriParser::parsePath($value),
+                    Component::QUERY => $this->query = UriParser::parseQuery($value),
+                    default => $this->$component = $value
+                };
             }
         }
 
@@ -149,7 +153,7 @@
             if ($query === '') {
                 unset($instance->query);
             } else {
-                $instance->query = Query::createFromString($query);
+                $instance->query = UriParser::parseQuery($query);
             }
 
             return $instance;
@@ -172,15 +176,15 @@
             if ($host === '') {
                 unset($instance->host);
             } else {
-                $instance->host = strtolower($host);
+                $instance->host = UriParser::parseHost($host);
             }
 
             return $instance;
         }
 
         /**
-         * @param string $path
          * @throws InvalidArgumentException
+         * @param Path|string $path
          *
          * @return static
          */
@@ -190,7 +194,7 @@
             }
 
             $instance = clone $this;
-            $instance->path = ($path instanceof Path) ? $path : UriParser::parse(Component::PATH, $path);
+            $instance->path = ($path instanceof Path) ? $path : UriParser::parsePath($path);
 
             return $instance;
         }
