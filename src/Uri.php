@@ -63,7 +63,7 @@
             }
 
             if (($this->pass ?? '') === '') {
-                return $this->user;
+                return $this->user ?? '';
             }
 
             return sprintf('%s:%s', $this->user, $this->pass);
@@ -180,6 +180,10 @@
          * @return Uri
          */
         function withPath ($path) : Uri {
+            if (!is_string($path) && !$path instanceof Path) {
+                throw new InvalidArgumentException("Invalid URI path type, expected string and got `" . gettype($path) . "`");
+            }
+
             $instance = clone $this;
             $instance->path = ($path instanceof Path) ? $path : UriParser::parse(Component::PATH, $path);
 
