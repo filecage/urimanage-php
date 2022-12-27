@@ -210,7 +210,7 @@
 
             $scheme = strtolower($scheme);
 
-            if (!preg_match('/^[a-z][a-z0-9-\.\+]+$/', $scheme)) {
+            if (!preg_match('/^[a-z][a-z0-9-.+]+$/', $scheme)) {
                 throw new InvalidArgumentException("Invalid URI scheme: got `{$scheme}` but must start with a letter and may only contain letters, digits, and -/+/.");
             }
 
