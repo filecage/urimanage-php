@@ -165,7 +165,7 @@
 
             $instance = clone $this;
 
-            if ($host === '' | $host === null) {
+            if ($host === '' || $host === null) {
                 unset($instance->host);
             } else {
                 $instance->host = strtolower($host);
