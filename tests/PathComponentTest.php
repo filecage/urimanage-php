@@ -46,6 +46,7 @@
          * @return \Generator
          */
         function providePathsWithFileExtension () : \Generator {
+            yield '(empty)' => ['', '', ''];
             yield 'foo.php' => ['foo.php', 'php', 'foo'];
             yield 'bar/foo.php' => ['bar/foo.php', 'php', 'bar/foo'];
             yield '/bar/foo.php' => ['/bar/foo.php', 'php', '/bar/foo'];

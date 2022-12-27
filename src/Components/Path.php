@@ -98,11 +98,12 @@
         function withFileExtensionRemoved () : Path {
             $path = (string) $this;
             $pathInfo = pathinfo($path);
-            $pathWithoutFileExtension = $pathInfo['dirname'] . Symbol::PATH_SEPARATOR . $pathInfo['filename'];
+            $pathWithoutFileExtension = isset($pathInfo['dirname']) ? $pathInfo['dirname'] . Symbol::PATH_SEPARATOR : '';
+            $pathWithoutFileExtension = $pathWithoutFileExtension . $pathInfo['filename'];
             $pathWithoutFileExtension = trim($pathWithoutFileExtension, Symbol::FILE_EXTENSION_SEPARATOR);
 
             // Remove leading slash if there was none before (pathinfo might add it)
-            if ($path[0] !== Symbol::PATH_SEPARATOR) {
+            if (($path[0] ?? '') !== Symbol::PATH_SEPARATOR) {
                 $pathWithoutFileExtension = ltrim($pathWithoutFileExtension, Symbol::PATH_SEPARATOR);
             }
 
