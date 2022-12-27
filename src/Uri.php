@@ -136,13 +136,17 @@
         }
 
         /**
-         * @param string|null $query
+         * @throws InvalidArgumentException
+         * @param string $query
          * @return static
          */
-            $instance = clone $this;
         function withQuery ($query) : static {
+            if (!is_string($query)) {
+                throw new InvalidArgumentException("Invalid URI query type, expected string and got `" . gettype($query) . "`");
+            }
 
-            if ($query === '' || $query === null) {
+            $instance = clone $this;
+            if ($query === '') {
                 unset($instance->query);
             } else {
                 $instance->query = Query::createFromString($query);
@@ -154,19 +158,19 @@
 
         /**
          * @param string|null $host
+         * @throws InvalidArgumentException
          * @param string $host
          *
-         * @return Uri
          * @return static
          */
-            if ($host !== null && !is_string($host)) {
         function withHost ($host) : static {
+            if (!is_string($host)) {
                 throw new InvalidArgumentException("Invalid URI host type, expected string and got `" . gettype($host) . "`");
             }
 
             $instance = clone $this;
 
-            if ($host === '' || $host === null) {
+            if ($host === '') {
                 unset($instance->host);
             } else {
                 $instance->host = strtolower($host);
@@ -177,6 +181,7 @@
 
         /**
          * @param string $path
+         * @throws InvalidArgumentException
          *
          * @return static
          */
@@ -197,17 +202,17 @@
          *
          * @return static
          */
-            if (!is_string($scheme) && $scheme !== null) {
-                throw new InvalidArgumentException("Invalid URI scheme type, expected string and got `" . gettype($scheme) . "`");
-            }
-
         function withScheme ($scheme) : static {
             // Unset scheme if it's set empty
-            if ($scheme === '' || $scheme === null) {
+            if ($scheme === '') {
                 $instance = clone $this;
                 unset($instance->scheme);
 
                 return $instance;
+            }
+
+            if (!is_string($scheme)) {
+                throw new InvalidArgumentException("Invalid URI scheme type, expected string and got `" . gettype($scheme) . "`");
             }
 
             $scheme = strtolower($scheme);
@@ -223,11 +228,20 @@
         }
 
         /**
+         * @throws InvalidArgumentException
          * @param string $user
          * @param string|null $password
          * @return static
          */
         function withUserInfo ($user, $password = null) : static {
+            if (!is_string($user)) {
+                throw new InvalidArgumentException("Invalid URI user type: expected string but got `" . gettype($user) . "`");
+            }
+
+            if ($password !== null && !is_string($password)) {
+                throw new InvalidArgumentException("Invalid URI password type: expected string but got `" . gettype($password) . "`");
+            }
+
             $instance = clone $this;
             $instance->user = $user;
             $instance->pass = $password;
@@ -240,6 +254,22 @@
          * @return static
          */
         function withPort ($port) : static {
+            if ($port === null) {
+                $instance = clone $this;
+                unset($instance->port);
+
+                return $instance;
+            }
+
+            if (!is_int($port)) {
+                // PSR-7 is unclear about how to handle valid ports in a string format
+                throw new InvalidArgumentException("Invalid URI port type: expected int but got `" . gettype($port) . "`");
+            }
+
+            if ($port > 65535 || $port < 0) {
+                throw new InvalidArgumentException("Invalid URI port value: must be between 0-65535, got `{$port}` instead");
+            }
+
             $instance = clone $this;
             $instance->port = $port;
 
@@ -251,6 +281,10 @@
          * @return static
          */
         function withFragment ($fragment) : static {
+            if (!is_string($fragment)) {
+                throw new InvalidArgumentException("Invalid URI fragment type: expected string but got `" . gettype($fragment) . "`");
+            }
+
             $instance = clone $this;
             $instance->fragment = $fragment;
 
