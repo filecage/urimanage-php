@@ -2,6 +2,9 @@
 
     namespace UriManage\Components;
 
+    use Generator;
+    use InvalidArgumentException;
+    use UriManage\Components\QueryParameters\QueryParameter;
     use UriManage\Constants\Symbol;
 
     /**
@@ -12,9 +15,10 @@
         /**
          * @var QueryParameter[]
          */
-        private $queryParameters;
+        private array $queryParameters;
 
         /**
+         * @throws InvalidArgumentException
          * @param string $query
          * @return Query
          */
@@ -62,18 +66,20 @@
         }
 
         /**
+         * @throws InvalidArgumentException
          * @param string $query
-         * @return \Generator
+         *
+         * @return Generator & iterable<QueryParameter>
          */
-        private static function mapKeyValuePairsToQueryParameters (string $query) : \Generator {
+        private static function mapKeyValuePairsToQueryParameters (string $query) : Generator {
             foreach (self::collectKeyValuePairs($query) as $key => $value) {
-                yield new QueryParameter($key, $value);
+                yield QueryParameter::create($key, $value);
             }
         }
 
         /**
          * @param string $query
-         * @return array
+         * @return array<string, array<int, string|null>|string|null>
          */
         private static function collectKeyValuePairs (string $query) : array {
             $parameters = [];
@@ -87,6 +93,10 @@
 
                 if (substr($key, -2) === Symbol::QUERY_ARRAY_SUFFIX) {
                     $key = substr($key, 0, -2);
+                    if (!isset($parameters[$key]) || !is_array($parameters[$key])) {
+                        $parameters[$key] = [];
+                    }
+
                     $parameters[$key][] = $value;
                 } else {
                     $parameters[$key] = $value;

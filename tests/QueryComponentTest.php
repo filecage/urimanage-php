@@ -4,7 +4,7 @@
 
     use PHPUnit\Framework\TestCase;
     use UriManage\Components\Query;
-    use UriManage\Components\QueryParameter;
+    use UriManage\Components\QueryParameters\QueryParameter;
 
     class QueryComponentTest extends TestCase {
 

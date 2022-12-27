@@ -4,7 +4,8 @@
 
     use Generator;
     use PHPUnit\Framework\TestCase;
-    use UriManage\Components\QueryParameter;
+    use UriManage\Components\QueryParameters\QueryParameter;
+    use UriManage\Components\QueryParameters\StringQueryParameter;
 
     class QueryParameterComponentTest extends TestCase {
 
@@ -13,11 +14,12 @@
          * @param bool $expectedBool
          * @param string $expectedString
          * @param int $expectedInt
+         * @throws \InvalidArgumentException
          *
          * @dataProvider provideTypeCastableParameters
          */
         function testExpectsCorrectParameterCasting ($value, bool $expectedBool, string $expectedString, int $expectedInt) {
-            $queryParameter = new QueryParameter('test', $value);
+            $queryParameter = QueryParameter::create('test', $value);
 
             if ($expectedBool === true) {
                 $this->assertTrue($queryParameter->getValueAsBool(), 'Expected QueryParameter as boolean to be true');
