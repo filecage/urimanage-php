@@ -157,7 +157,6 @@
 
 
         /**
-         * @param string|null $host
          * @throws InvalidArgumentException
          * @param string $host
          *
