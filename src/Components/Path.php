@@ -86,7 +86,7 @@
         }
 
         /**
-         * @return array
+         * @return string[]
          */
         function getParts () : array {
             return $this->parts;
