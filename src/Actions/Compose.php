@@ -55,7 +55,7 @@ final class Compose {
     }
 
     private static function addPathForAbsoluteUrl (string $buffer, Uri $uri) : string {
-        $path = $uri->getPathUnsanitised() ?? '';
+        $path = $uri->getPathUnsanitised();
         if ($path !== '') {
             // Add path separator symbol if the path doesn't have it yet
             if (substr($path, 0, 1) !== Symbol::PATH_SEPARATOR) {
