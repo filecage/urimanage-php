@@ -137,10 +137,10 @@
 
         /**
          * @param string|null $query
-         * @return Uri
+         * @return static
          */
-        function withQuery ($query) : Uri {
             $instance = clone $this;
+        function withQuery ($query) : static {
 
             if ($query === '' || $query === null) {
                 unset($instance->query);
@@ -154,11 +154,13 @@
 
         /**
          * @param string|null $host
+         * @param string $host
          *
          * @return Uri
+         * @return static
          */
-        function withHost ($host) : Uri {
             if ($host !== null && !is_string($host)) {
+        function withHost ($host) : static {
                 throw new InvalidArgumentException("Invalid URI host type, expected string and got `" . gettype($host) . "`");
             }
 
@@ -176,9 +178,9 @@
         /**
          * @param string $path
          *
-         * @return Uri
+         * @return static
          */
-        function withPath ($path) : Uri {
+        function withPath ($path) : static {
             if (!is_string($path) && !$path instanceof Path) {
                 throw new InvalidArgumentException("Invalid URI path type, expected string and got `" . gettype($path) . "`");
             }
@@ -192,13 +194,14 @@
         /**
          * @throws InvalidArgumentException
          * @param string $scheme
-         * @return Uri
+         *
+         * @return static
          */
-        function withScheme ($scheme) : Uri {
             if (!is_string($scheme) && $scheme !== null) {
                 throw new InvalidArgumentException("Invalid URI scheme type, expected string and got `" . gettype($scheme) . "`");
             }
 
+        function withScheme ($scheme) : static {
             // Unset scheme if it's set empty
             if ($scheme === '' || $scheme === null) {
                 $instance = clone $this;
@@ -222,9 +225,9 @@
         /**
          * @param string $user
          * @param string|null $password
-         * @return Uri
+         * @return static
          */
-        function withUserInfo ($user, $password = null) : Uri {
+        function withUserInfo ($user, $password = null) : static {
             $instance = clone $this;
             $instance->user = $user;
             $instance->pass = $password;
@@ -234,9 +237,9 @@
 
         /**
          * @param int|null $port
-         * @return Uri
+         * @return static
          */
-        function withPort ($port) : Uri {
+        function withPort ($port) : static {
             $instance = clone $this;
             $instance->port = $port;
 
@@ -245,9 +248,9 @@
 
         /**
          * @param string $fragment
-         * @return Uri
+         * @return static
          */
-        function withFragment ($fragment) : Uri {
+        function withFragment ($fragment) : static {
             $instance = clone $this;
             $instance->fragment = $fragment;
 

@@ -44,7 +44,7 @@ class UriTest extends TestCase {
 
     function testExpectsHostToBeReset () {
         $uri = new Uri('http://www.example.com');
-        $uri = $uri->withHost(null);
+        $uri = $uri->withHost('');
 
         $this->assertSame('', $uri->getHost());
         $this->assertSame('http:', (string) $uri,
@@ -54,7 +54,7 @@ class UriTest extends TestCase {
 
     function testExpectsQueryToBeReset () {
         $uri = new Uri('http://www.example.com?foo=bar&baz=boo');
-        $uri = $uri->withQuery(null);
+        $uri = $uri->withQuery('');
 
         $this->assertSame('', $uri->getQuery());
         $this->assertSame('http://www.example.com', (string) $uri);
@@ -62,7 +62,7 @@ class UriTest extends TestCase {
 
     function testExpectsSchemeToBeReset () {
         $uri = new Uri('http://www.example.com');
-        $uri = $uri->withScheme(null);
+        $uri = $uri->withScheme('');
 
         $this->assertSame('', $uri->getScheme());
         $this->assertSame('//www.example.com', (string) $uri);
