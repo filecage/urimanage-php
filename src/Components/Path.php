@@ -148,7 +148,7 @@
         function compose () : string {
             $path = $this->composeUnsanitised();
 
-            return preg_replace('/^([\/]+)/', '/', $path);
+            return preg_replace('/^([\/]+)/', '/', $path) ?? '';
         }
 
         function __toString () : string {
@@ -164,6 +164,6 @@
             // PSR-7 itself does not specify this and allows upper- as well as lowercase
             return preg_replace_callback('/%[0-9A-F]{2}/', function(array $urlEntity){
                 return strtolower($urlEntity[0]);
-            }, rawurlencode($part));
+            }, rawurlencode($part)) ?? '';
         }
     }
