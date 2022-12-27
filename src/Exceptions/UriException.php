@@ -3,16 +3,21 @@
     namespace UriManage\Exceptions;
 
     class UriException extends \Exception {
-        private string $url;
+        private string $uri;
 
         /**
-         * @internal
          * @param string $message
-         * @param string $url
+         * @param string $uri
+         *
+         * @internal
          */
-        function __construct(string $message, string $url) {
+        function __construct(string $message, string $uri) {
             parent::__construct($message);
-            $this->url = $url;
+            $this->uri = $uri;
+        }
+
+        function getUri () : string {
+            return $this->uri;
         }
 
     }
