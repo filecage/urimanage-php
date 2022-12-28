@@ -327,16 +327,6 @@
         }
 
         /**
-         * Ensures a deep Uri cloning
-         *
-         * TODO: Test that ensures that immutability is kept
-         */
-        function __clone () {
-            if ($this->path) $this->path = clone $this->path;
-            if ($this->query) $this->query = clone $this->query;
-        }
-
-        /**
          * @return bool
          */
         private function isDefaultPortForScheme () : bool {
