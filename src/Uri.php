@@ -247,8 +247,8 @@
             }
 
             $instance = clone $this;
-            $instance->user = $user;
-            $instance->pass = $password;
+            $instance->user = ($user !== '') ? $user : null;
+            $instance->pass = ($password !== '') ? $password : null;
 
             return $instance;
         }
