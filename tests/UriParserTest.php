@@ -58,10 +58,16 @@
         }
 
         function testExpectsExceptionForInvalidUri () {
-            $this->expectException(UriException::class);
-            $this->expectExceptionMessage('given URL is invalid');
+            $expectedException = null;
+            try {
+                new Uri('http://user@:80');
+            } catch (UriException $exception) {
+                $expectedException = $exception;
+            }
 
-            new Uri('http://user@:80');
+            $this->assertInstanceOf(UriException::class, $expectedException);
+            $this->assertStringContainsString('given URL is invalid', $exception->getMessage());
+            $this->assertSame('http://user@:80', $exception->getUri());
         }
 
 
