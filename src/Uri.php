@@ -41,6 +41,7 @@
 
             $this->originalUri = $uri;
             foreach ($uriComponents as $component => $value) {
+                /** @psalm-suppress InvalidScalarArgument TODO: Remove when psalm supports `ArrayShape` attribute */
                 match ($component) {
                     Component::HOST => $this->host = UriParser::parseHost($value),
                     Component::PATH => $this->path = UriParser::parsePath($value),
