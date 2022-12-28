@@ -147,7 +147,7 @@
          */
         function withQuery ($query) : static {
             if (!is_string($query)) {
-                throw new InvalidArgumentException("Invalid URI query type, expected `string` and got `" . gettype($query) . "` instead");
+                throw new InvalidArgumentException("Invalid URI query type: expected `string` but got `" . gettype($query) . "` instead");
             }
 
             $instance = clone $this;
@@ -169,7 +169,7 @@
          */
         function withHost ($host) : static {
             if (!is_string($host)) {
-                throw new InvalidArgumentException("Invalid URI host type, expected `string` and got `" . gettype($host) . "` instead");
+                throw new InvalidArgumentException("Invalid URI host type: expected `string` but got `" . gettype($host) . "` instead");
             }
 
             $instance = clone $this;
@@ -191,7 +191,7 @@
          */
         function withPath ($path) : static {
             if (!is_string($path) && !$path instanceof Path) {
-                throw new InvalidArgumentException("Invalid URI path type, expected `string` and got `" . gettype($path) . "` instead");
+                throw new InvalidArgumentException("Invalid URI path type: expected `string` but got `" . gettype($path) . "` instead");
             }
 
             $instance = clone $this;
@@ -216,7 +216,7 @@
             }
 
             if (!is_string($scheme)) {
-                throw new InvalidArgumentException("Invalid URI scheme type, expected `string` and got `" . gettype($scheme) . "` instead");
+                throw new InvalidArgumentException("Invalid URI scheme type: expected `string` but got `" . gettype($scheme) . "` instead");
             }
 
             $scheme = strtolower($scheme);
