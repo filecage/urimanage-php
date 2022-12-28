@@ -42,30 +42,42 @@ class UriTest extends TestCase {
         $uri->withHost(false);
     }
 
+    function testExpectsSchemeToBeReset () {
+        $uri = new Uri('http://www.example.com');
+        $uriWithoutScheme = $uri->withScheme('');
+
+        $this->assertNotSame($uri, $uriWithoutScheme, 'Expected immutability to be kept');
+        $this->assertSame('', $uriWithoutScheme->getScheme());
+        $this->assertSame('//www.example.com', (string) $uriWithoutScheme);
+    }
+
     function testExpectsHostToBeReset () {
         $uri = new Uri('http://www.example.com');
-        $uri = $uri->withHost('');
+        $uriWithoutHost = $uri->withHost('');
 
-        $this->assertSame('', $uri->getHost());
-        $this->assertSame('http:', (string) $uri,
-            (string) $uri === 'http://' ? 'A leading `//` is part of the authority, not the scheme' : ''
+        $this->assertNotSame($uri, $uriWithoutHost, 'Expected immutability to be kept');
+        $this->assertSame('', $uriWithoutHost->getHost());
+        $this->assertSame('http:', (string) $uriWithoutHost,
+            (string) $uriWithoutHost === 'http://' ? 'A leading `//` is part of the authority, not the scheme' : ''
         );
     }
 
     function testExpectsQueryToBeReset () {
         $uri = new Uri('http://www.example.com?foo=bar&baz=boo');
-        $uri = $uri->withQuery('');
+        $uriWithoutQuery = $uri->withQuery('');
 
-        $this->assertSame('', $uri->getQuery());
-        $this->assertSame('http://www.example.com', (string) $uri);
+        $this->assertNotSame($uri, $uriWithoutQuery, 'Expected immutability to be kept');
+        $this->assertSame('', $uriWithoutQuery->getQuery());
+        $this->assertSame('http://www.example.com', (string) $uriWithoutQuery);
     }
 
-    function testExpectsSchemeToBeReset () {
-        $uri = new Uri('http://www.example.com');
-        $uri = $uri->withScheme('');
+    function testExpectsPortToBeReset () {
+        $uri = new Uri('http://www.example.com:1234');
+        $uriWithoutPort = $uri->withPort(null);
 
-        $this->assertSame('', $uri->getScheme());
-        $this->assertSame('//www.example.com', (string) $uri);
+        $this->assertNotSame($uri, $uriWithoutPort, 'Expected immutability to be kept');
+        $this->assertNull($uriWithoutPort->getPort());
+        $this->assertSame('http://www.example.com', (string) $uriWithoutPort);
     }
 
     /**
