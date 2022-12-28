@@ -5,6 +5,7 @@
     use PHPUnit\Framework\TestCase;
     use UriManage\Components\Query;
     use UriManage\Components\QueryParameters\QueryParameter;
+    use UriManage\Components\QueryParameters\StringQueryParameter;
 
     class QueryComponentTest extends TestCase {
 
@@ -67,6 +68,30 @@
                     'i exist' => '👍'
                 ]
             ];
+        }
+
+        function testExpectsQueryParameterToBeAdded () {
+            $query = new Query(new StringQueryParameter('baz', 'boo'));
+            $query = $query->withParameter(new StringQueryParameter('foo', 'bar'));
+
+            $this->assertTrue($query->hasParameter('foo'));
+            $this->assertSame('baz=boo&foo=bar', (string) $query);
+        }
+
+        function testExpectsQueryParameterKeyAndvalueToBeAdded () {
+            $query = new Query(new StringQueryParameter('baz', 'boo'));
+            $query = $query->withParameterKeyAndValue('foo', 'bar');
+
+            $this->assertTrue($query->hasParameter('foo'));
+            $this->assertSame('baz=boo&foo=bar', (string) $query);
+        }
+
+        function testExpectsQueryParameterToBeRemoved () {
+            $query = new Query(new StringQueryParameter('foo', 'bar'), new StringQueryParameter('baz', 'boo'));
+            $query = $query->withParameterKeyRemoved('foo');
+
+            $this->assertFalse($query->hasParameter('foo'));
+            $this->assertSame('baz=boo', (string) $query);
         }
 
     }

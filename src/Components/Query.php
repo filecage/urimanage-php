@@ -13,7 +13,7 @@
     final class Query {
 
         /**
-         * @var QueryParameter[]
+         * @var array<string, QueryParameter>
          */
         private array $queryParameters;
 
@@ -30,7 +30,9 @@
          * @param QueryParameter ...$queryParameters
          */
         function __construct (QueryParameter ...$queryParameters) {
-            $this->queryParameters = $queryParameters;
+            foreach ($queryParameters as $queryParameter) {
+                $this->queryParameters[$queryParameter->getKey()] = $queryParameter;
+            }
         }
 
         /**
@@ -38,7 +40,7 @@
          * @return bool
          */
         function hasParameter (string $key) : bool {
-            return $this->getParameter($key) !== null; // todo: we could build an index and read from that instead
+            return isset($this->queryParameters[$key]);
         }
 
         /**
@@ -47,13 +49,32 @@
          * @return QueryParameter|null
          */
         function getParameter (string $key) : ?QueryParameter {
-            foreach ($this->queryParameters as $parameter) {
-                if ($parameter->getKey() === $key) {
-                    return $parameter;
-                }
-            }
+            return $this->queryParameters[$key] ?? null;
+        }
 
-            return null;
+        function withParameter (QueryParameter $queryParameter) : self {
+            $instance = clone $this;
+            $instance->queryParameters[$queryParameter->getKey()] = $queryParameter;
+
+            return $instance;
+        }
+
+        function withParameterKeyRemoved (string $queryParameterKey) : self {
+            $instance = clone $this;
+            unset($instance->queryParameters[$queryParameterKey]);
+
+            return $instance;
+        }
+
+        /**
+         * @throws InvalidArgumentException
+         * @param string $key
+         * @param mixed $value
+         *
+         * @return self
+         */
+        function withParameterKeyAndValue (string $key, mixed $value) : self {
+            return $this->withParameter(QueryParameter::create($key, $value));
         }
 
         /**
