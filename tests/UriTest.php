@@ -34,14 +34,6 @@ class UriTest extends TestCase {
         ];
     }
 
-    function testExpectsExceptionWhenPassingNonStringHostname () {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid URI host type, expected `string` and got `boolean`');
-
-        $uri = new Uri(null);
-        $uri->withHost(false);
-    }
-
     function testExpectsSchemeToBeReset () {
         $uri = new Uri('http://www.example.com');
         $uriWithoutScheme = $uri->withScheme('');
@@ -49,6 +41,32 @@ class UriTest extends TestCase {
         $this->assertNotSame($uri, $uriWithoutScheme, 'Expected immutability to be kept');
         $this->assertSame('', $uriWithoutScheme->getScheme());
         $this->assertSame('//www.example.com', (string) $uriWithoutScheme);
+    }
+
+    /**
+     * @dataProvider provideInvalidUserInfo
+     */
+    function testExpectsExceptionWhenPassingInvalidUserInfo (mixed $invalidUser, mixed $invalidPassword, string $expectedExceptionMessage) {
+        $uri = new Uri(null);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
+        $uri->withUserInfo($invalidUser, $invalidPassword);
+    }
+
+    function provideInvalidUserInfo () : \Generator {
+        yield 'invalid user type, no password' => [false, null, 'Invalid URI user type: expected `string` but got `boolean` instead'];
+        yield 'invalid user type, valid password' => [false, 'foo', 'Invalid URI user type: expected `string` but got `boolean` instead'];
+        yield 'valid user type, invalid password' => ['foobar', false, 'Invalid URI password type: expected `string` but got `boolean` instead'];
+    }
+
+    function testExpectsUserInfoToBeReset () {
+        $uri = new Uri('http://foo:bar@www.example.com');
+        $uriWithoutUserInfo = $uri->withUserInfo('');
+
+        $this->assertNotSame($uri, $uriWithoutUserInfo, 'Expected immutability to be kept');
+        $this->assertSame('', $uriWithoutUserInfo->getUserInfo());
+        $this->assertSame('http://www.example.com', (string) $uriWithoutUserInfo);
     }
 
     function testExpectsHostToBeReset () {
@@ -137,6 +155,29 @@ class UriTest extends TestCase {
     function provideCompositionUris () : \Generator {
         yield 'Absolute URL, relative path' => [(new Uri('https://www.example.com'))->withPath('foo'), 'https://www.example.com/foo'];
         yield 'Relative URL, absolute path' => [(new Uri('/foo')), '/foo'];
+    }
+
+    /**
+     * @dataProvider provideSetterMethodsWithInvalidTypes
+     */
+    function testExpectsExceptionWhenInvalidTypesArePassedToUri (string $setterMethod) : void {
+        $uri = new Uri(null);
+
+        // Test with `true` and `false` to avoid false-negatives because of checks for truthy/falsy
+        foreach ([true, false] as $invalidValue) {
+            $this->expectException(\InvalidArgumentException::class);
+            $this->expectExceptionMessage('type: expected `string` but got `boolean` instead');
+
+            call_user_func([$uri, $setterMethod], $invalidValue);
+        }
+    }
+
+    function provideSetterMethodsWithInvalidTypes () : \Generator {
+        yield 'scheme' => ['withScheme'];
+        yield 'host' => ['withHost'];
+        yield 'path' => ['withPath'];
+        yield 'query' => ['withQuery'];
+        yield 'fragment' => ['withFragment'];
     }
 
 }
