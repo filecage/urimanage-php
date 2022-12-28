@@ -3,6 +3,8 @@
 namespace UriManage\Components\QueryParameters;
 
 
+use UriManage\Constants\Symbol;
+
 /**
  * @internal
  */
@@ -35,4 +37,15 @@ class ArrayQueryParameter extends QueryParameter {
         return (int) $this->value;
     }
 
+    function __toString (): string {
+        $key = rawurlencode($this->key . Symbol::QUERY_ARRAY_SUFFIX);
+
+        return implode(Symbol::QUERY_PAIR_SEPARATOR, array_map(function($value) use ($key) {
+            if ($value === null) {
+                return $key;
+            }
+
+            return $key . Symbol::QUERY_KEYVALUE_SEPARATOR . rawurlencode($value);
+        }, $this->value));
+    }
 }

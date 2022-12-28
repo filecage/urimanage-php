@@ -48,18 +48,8 @@ abstract class QueryParameter implements \Stringable {
     abstract function getValueAsInt (): int;
 
     function __toString () : string {
-        $value = $this->getValuePlain();
-        $key = rawurlencode($this->key . (is_array($value) ? Symbol::QUERY_ARRAY_SUFFIX : ''));
-
-        if (is_array($value)) {
-            return implode(Symbol::QUERY_PAIR_SEPARATOR, array_map(function($value) use ($key){
-                if ($value === null) {
-                    return $key;
-                }
-
-                return $key . Symbol::QUERY_KEYVALUE_SEPARATOR . rawurlencode($value);
-            }, $value));
-        } elseif ($value === null) {
+        $key = rawurlencode($this->key);
+        if ($this->getValuePlain() === null) {
             return $key;
         }
 

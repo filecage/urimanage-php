@@ -12,16 +12,15 @@
     use UriManage\Exceptions\UriException;
 
     class Uri implements UriInterface {
-        protected ?string $scheme;
-        protected ?string $user;
-        protected ?string $pass;
-        protected ?string $host;
-        protected ?int $port;
+        protected ?string $scheme = null;
+        protected ?string $user = null;
+        protected ?string $pass = null;
+        protected ?string $host = null;
+        protected ?int $port = null;
         protected ?Path $path = null;
         protected ?Query $query = null;
-        protected ?string $fragment;
-        protected ?string $originalUri;
-        protected bool $hasBaseUrlRemoved = false;
+        protected ?string $fragment = null;
+        protected ?string $originalUri = null;
 
         /**
          * @throws InvalidArgumentException
@@ -62,12 +61,12 @@
          * @return string
          */
         function getUserInfo () : string {
-            if (!$this->hasUserInfo()) {
+            if ($this->user === null) {
                 return '';
             }
 
-            if (($this->pass ?? '') === '') {
-                return $this->user ?? '';
+            if ($this->pass === null) {
+                return $this->user;
             }
 
             return sprintf('%s:%s', $this->user, $this->pass);
@@ -77,19 +76,19 @@
          * @return string
          */
         function getAuthority () : string {
-            if (!$this->hasUserInfo()) {
-                if ($this->isDefaultPortForScheme() || $this->getPort() === null) {
+            if ($this->user === null) {
+                if ($this->isDefaultPortForScheme() || $this->port === null) {
                     return $this->getHost();
                 }
 
-                return sprintf('%s:%d', $this->getHost(), $this->getPort());
+                return sprintf('%s:%d', $this->getHost(), $this->port);
             }
 
-            if ($this->isDefaultPortForScheme() || $this->getPort() === null) {
+            if ($this->isDefaultPortForScheme() || $this->port === null) {
                 return sprintf('%s@%s', $this->getUserInfo(), $this->getHost());
             }
 
-            return sprintf('%s@%s:%d', $this->getUserInfo(), $this->getHost(), $this->getPort());
+            return sprintf('%s@%s:%d', $this->getUserInfo(), $this->getHost(), $this->port);
         }
 
         /**
@@ -180,7 +179,7 @@
             $instance = clone $this;
 
             if ($host === '') {
-                unset($instance->host);
+                $instance->host = null;
             } else {
                 $instance->host = UriParser::parseHost($host);
             }
@@ -259,13 +258,13 @@
         }
 
         /**
-         * @param int|null $port
+         * @param null|int $port
          * @return static
          */
         function withPort ($port) : static {
             if ($port === null) {
                 $instance = clone $this;
-                unset($instance->port);
+                $instance->port = null;
 
                 return $instance;
             }
@@ -335,13 +334,6 @@
             }
 
             return (DefaultSchemePorts::PORT_TO_SCHEME[$this->port] ?? null) === $this->getScheme();
-        }
-
-        /**
-         * @return bool
-         */
-        private function hasUserInfo () : bool {
-            return ($this->user ?? null) !== null;
         }
 
     }
