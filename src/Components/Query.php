@@ -15,7 +15,7 @@
         /**
          * @var array<string, QueryParameter>
          */
-        private array $queryParameters;
+        private array $queryParameters = [];
 
         /**
          * @throws InvalidArgumentException
@@ -90,9 +90,9 @@
          * @throws InvalidArgumentException
          * @param string $query
          *
-         * @return Generator & iterable<QueryParameter>
+         * @return iterable<int, QueryParameter>
          */
-        private static function mapKeyValuePairsToQueryParameters (string $query) : Generator {
+        private static function mapKeyValuePairsToQueryParameters (string $query) : iterable {
             foreach (self::collectKeyValuePairs($query) as $key => $value) {
                 yield QueryParameter::create($key, $value);
             }
@@ -100,7 +100,7 @@
 
         /**
          * @param string $query
-         * @return array<string, array<int, string|null>|string|null>
+         * @return array<string, non-empty-array<array-key, mixed>|string|null>
          */
         private static function collectKeyValuePairs (string $query) : array {
             $parameters = [];

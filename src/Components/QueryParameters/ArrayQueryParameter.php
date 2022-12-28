@@ -34,7 +34,7 @@ class ArrayQueryParameter extends QueryParameter {
     }
 
     function getValueAsInt () : int {
-        return (int) $this->value;
+        return empty($this->value) ? 0 : 1;
     }
 
     function __toString (): string {

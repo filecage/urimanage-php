@@ -21,13 +21,19 @@ abstract class QueryParameter implements \Stringable {
         if (is_bool($value)) {
             return new BooleanQueryParameter($key, $value);
         } elseif (is_array($value)) {
-            return new ArrayQueryParameter($key, ...$value);
+            return new ArrayQueryParameter($key, ...array_map(function (mixed $value) use ($key) : string|null {
+                if (!is_string($value) && $value !== null) {
+                    throw new InvalidArgumentException("Unsupported query parameter value of type `" . gettype($value) . "` for item of key `{$key}`");
+                }
+
+                return $value;
+            }, $value));
         } elseif ($value instanceof \Stringable) {
             $value = (string) $value;
         }
 
         if ($value !== null && !is_string($value)) {
-            throw new InvalidArgumentException("Unsupported query parameter of type `" . gettype($value) . "`");
+            throw new InvalidArgumentException("Unsupported query parameter value of type `" . gettype($value) . "` for key `{$key}`");
         }
 
         return new StringQueryParameter($key, $value);
