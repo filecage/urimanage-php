@@ -85,4 +85,23 @@
                 'case sensitive' => ['IgOr', 'RaSm0537', 'IgOr:RaSm0537'],
             ];
         }
+
+        /**
+         * @dataProvider provideInvalidPorts
+         */
+        function testExpectsExceptionWhenPassingInvalidPort (mixed $invalidPort, string $expectedExceptionMessage) : void {
+            $uri = new Uri(null);
+
+            $this->expectException(\InvalidArgumentException::class);
+            $this->expectExceptionMessage($expectedExceptionMessage);
+
+            $uri->withPort($invalidPort);
+        }
+
+        function provideInvalidPorts () : \Generator {
+            yield 'value too high' => [99999, 'must be between 0-65535, got `99999` instead'];
+            yield 'value too low' => [-1, 'must be between 0-65535, got `-1` instead'];
+            yield 'value not an int' => ['foobar', 'expected `int` but got `string` instead'];
+        }
+
     }
