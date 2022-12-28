@@ -134,6 +134,15 @@
         }
 
         /**
+         * Allows accessing the query data as object
+         *
+         * @return Query
+         */
+        function getQueryData () : Query {
+            return $this->query ?? new Query();
+        }
+
+        /**
          * @return string
          */
         function getScheme () : string {
@@ -142,20 +151,16 @@
 
         /**
          * @throws InvalidArgumentException
-         * @param string $query
+         * @param string|Query $query
          * @return static
          */
         function withQuery ($query) : static {
-            if (!is_string($query)) {
+            if (!is_string($query) && !$query instanceof Query) {
                 throw new InvalidArgumentException("Invalid URI query type: expected `string` but got `" . gettype($query) . "` instead");
             }
 
             $instance = clone $this;
-            if ($query === '') {
-                unset($instance->query);
-            } else {
-                $instance->query = UriParser::parseQuery($query);
-            }
+            $instance->query = ($query === '') ? null : (($query instanceof Query) ? $query : UriParser::parseQuery($query));
 
             return $instance;
         }

@@ -89,6 +89,19 @@ class UriTest extends TestCase {
         $this->assertSame('http://www.example.com', (string) $uriWithoutQuery);
     }
 
+    function testExpectsQueryToBeSetFromQueryObject () {
+        $uri = new Uri('http://www.example.com?foo=bar&baz=boo');
+        $query = $uri->getQueryData();
+
+        $queryModified = $query->withParameterKeyAndValue('bar', 'boo');
+        $uriWithModifiedQuery = $uri->withQuery($queryModified);
+
+        $this->assertNotSame($uri->getQueryData(), $uriWithModifiedQuery->getQueryData());
+        $this->assertNotSame($uri, $uriWithModifiedQuery, 'Expected immutability to be kept');
+        $this->assertSame('foo=bar&baz=boo&bar=boo', $uriWithModifiedQuery->getQuery());
+        $this->assertSame('http://www.example.com?foo=bar&baz=boo&bar=boo', (string) $uriWithModifiedQuery);
+    }
+
     function testExpectsPortToBeReset () {
         $uri = new Uri('http://www.example.com:1234');
         $uriWithoutPort = $uri->withPort(null);
