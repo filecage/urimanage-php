@@ -36,7 +36,7 @@ class UriTest extends TestCase {
 
     function testExpectsExceptionWhenPassingNonStringHostname () {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid URI host type, expected string and got `boolean`');
+        $this->expectExceptionMessage('Invalid URI host type, expected `string` and got `boolean`');
 
         $uri = new Uri(null);
         $uri->withHost(false);

@@ -147,7 +147,7 @@
          */
         function withQuery ($query) : static {
             if (!is_string($query)) {
-                throw new InvalidArgumentException("Invalid URI query type, expected string and got `" . gettype($query) . "`");
+                throw new InvalidArgumentException("Invalid URI query type, expected `string` and got `" . gettype($query) . "` instead");
             }
 
             $instance = clone $this;
@@ -169,7 +169,7 @@
          */
         function withHost ($host) : static {
             if (!is_string($host)) {
-                throw new InvalidArgumentException("Invalid URI host type, expected string and got `" . gettype($host) . "`");
+                throw new InvalidArgumentException("Invalid URI host type, expected `string` and got `" . gettype($host) . "` instead");
             }
 
             $instance = clone $this;
@@ -191,7 +191,7 @@
          */
         function withPath ($path) : static {
             if (!is_string($path) && !$path instanceof Path) {
-                throw new InvalidArgumentException("Invalid URI path type, expected string and got `" . gettype($path) . "`");
+                throw new InvalidArgumentException("Invalid URI path type, expected `string` and got `" . gettype($path) . "` instead");
             }
 
             $instance = clone $this;
@@ -216,7 +216,7 @@
             }
 
             if (!is_string($scheme)) {
-                throw new InvalidArgumentException("Invalid URI scheme type, expected string and got `" . gettype($scheme) . "`");
+                throw new InvalidArgumentException("Invalid URI scheme type, expected `string` and got `" . gettype($scheme) . "` instead");
             }
 
             $scheme = strtolower($scheme);
@@ -239,11 +239,11 @@
          */
         function withUserInfo ($user, $password = null) : static {
             if (!is_string($user)) {
-                throw new InvalidArgumentException("Invalid URI user type: expected string but got `" . gettype($user) . "`");
+                throw new InvalidArgumentException("Invalid URI user type: expected `string` but got `" . gettype($user) . "` instead");
             }
 
             if ($password !== null && !is_string($password)) {
-                throw new InvalidArgumentException("Invalid URI password type: expected string but got `" . gettype($password) . "`");
+                throw new InvalidArgumentException("Invalid URI password type: expected `string` but got `" . gettype($password) . "` instead");
             }
 
             $instance = clone $this;
@@ -267,7 +267,7 @@
 
             if (!is_int($port)) {
                 // PSR-7 is unclear about how to handle valid ports in a string format
-                throw new InvalidArgumentException("Invalid URI port type: expected int but got `" . gettype($port) . "`");
+                throw new InvalidArgumentException("Invalid URI port type: expected `int` but got `" . gettype($port) . "` instead");
             }
 
             if ($port > 65535 || $port < 0) {
@@ -287,7 +287,7 @@
          */
         function withFragment ($fragment) : static {
             if (!is_string($fragment)) {
-                throw new InvalidArgumentException("Invalid URI fragment type: expected string but got `" . gettype($fragment) . "`");
+                throw new InvalidArgumentException("Invalid URI fragment type: expected `string` but got `" . gettype($fragment) . "` instead");
             }
 
             $instance = clone $this;
