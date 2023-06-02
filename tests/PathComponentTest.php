@@ -162,6 +162,8 @@
             yield ['/foo/bar/', '', true, true, '', '/foo', 'bar/'];
             yield ['/foo/bar', '', true, false, '/foo/', '/bar'];
             yield ['/foo.php/bar.html', 'html', true, false, '/foo.php', 'bar.html'];
+            yield ['', '', false, false, '', ''];
+            yield ['foo', '', false, false, 'foo', ''];
         }
 
     }
