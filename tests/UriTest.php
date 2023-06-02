@@ -193,4 +193,20 @@ class UriTest extends TestCase {
         yield 'fragment' => ['withFragment'];
     }
 
+    function testExpectsUriWithAddedPath () {
+        $uri = new Uri('https://www.example.com/foo');
+        $uri = $uri->withPathAdded('/bar');
+
+        $this->assertSame('https://www.example.com/foo/bar', $uri->compose());
+        $this->assertSame('/foo/bar', $uri->getPath());
+    }
+
+    function testExpectsUriWithAddedPathEvenIfPathWasEmptyBefore () {
+        $uri = new Uri('https://www.example.com');
+        $uri = $uri->withPathAdded('/foo/bar');
+
+        $this->assertSame('https://www.example.com/foo/bar', $uri->compose());
+        $this->assertSame('/foo/bar', $uri->getPath());
+    }
+
 }

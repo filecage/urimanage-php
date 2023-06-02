@@ -207,6 +207,18 @@
             return $instance;
         }
 
+        function withPathAdded (string $addedPath) : static {
+            $instance = clone $this;
+            $addedPath = Parse::parsePath($addedPath);
+            if ($instance->path !== null) {
+                $instance->path = $instance->path->concat($addedPath);
+            } else {
+                $instance->path = $addedPath;
+            }
+
+            return $instance;
+        }
+
         /**
          * @throws InvalidArgumentException
          * @param string $scheme
