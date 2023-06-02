@@ -135,4 +135,33 @@
             yield '/foo%2Fbar/baz/' => ['/foo%2Fbar/baz/', '/foo%2fbar/baz/'];
         }
 
+        /**
+         * @param string $expectedPath
+         * @param string $initialPath
+         * @param string ...$concatPaths
+         *
+         * @dataProvider provideConcatPaths
+         */
+        function testExpectsPathsToBeConcatenated (string $expectedPath, string $expectedFileExtension, bool $expectedIsAbsolute, bool $expectedHasTail, string $initialPath, string ...$concatPaths) {
+            $path = Path::createFromString($initialPath);
+            foreach ($concatPaths as $concatPath) {
+                $path = $path->concat(Path::createFromString($concatPath));
+            }
+
+            $this->assertSame($expectedPath, $path->compose());
+            $this->assertSame($expectedFileExtension, $path->getFileExtension());
+            $this->assertSame($expectedIsAbsolute, $path->isAbsolute());
+            $this->assertSame($expectedHasTail, $path->hasTail());
+        }
+
+        function provideConcatPaths () : \Generator {
+            yield ['/foo/bar', '', true, false, '/foo', '/bar'];
+            yield ['/foo/bar', '', true, false, '/foo', 'bar'];
+            yield ['foo/bar', '', false, false, 'foo', 'bar'];
+            yield ['/foo', '', true, false, '', '/foo'];
+            yield ['/foo/bar/', '', true, true, '', '/foo', 'bar/'];
+            yield ['/foo/bar', '', true, false, '/foo/', '/bar'];
+            yield ['/foo.php/bar.html', 'html', true, false, '/foo.php', 'bar.html'];
+        }
+
     }

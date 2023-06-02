@@ -74,9 +74,10 @@
             return $this->parts;
         }
 
-        /**
-         * @return Path
-         */
+        function getFileExtension () : string {
+            return $this->fileExtension;
+        }
+
         function withFileExtensionRemoved () : Path {
             $path = (string) $this;
             $pathInfo = pathinfo($path);
@@ -92,11 +93,18 @@
             return self::createFromString($pathWithoutFileExtension);
         }
 
-        /**
-         * @return string
-         */
-        function getFileExtension () {
-            return $this->fileExtension;
+        function concat (Path $path) : Path {
+            $next = clone $this;
+            $next->hasTail = $path->hasTail;
+            $next->fileExtension = $path->fileExtension;
+            $next->parts = array_merge($next->parts, $path->parts);
+
+            // The only time we inherit absoluteness is if this path was empty
+            if (empty($this->parts)) {
+                $next->absolute = $path->absolute;
+            }
+
+            return $next;
         }
 
         /**
