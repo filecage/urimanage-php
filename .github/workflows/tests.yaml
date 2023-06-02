@@ -1,4 +1,4 @@
-name: PHP Tests
+name: Tests & QA
 
 on: [push, pull_request]
 
