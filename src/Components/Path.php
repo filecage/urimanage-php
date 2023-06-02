@@ -9,24 +9,12 @@
      */
     final class Path {
 
-        /**
-         * @var bool
-         */
-        private $absolute;
+        private bool $absolute;
+        private bool $hasTail;
+        private string $fileExtension;
 
-        /**
-         * @var bool
-         */
-        private $hasTail;
-
-        /**
-         * @var string[]
-         */
-        private $parts;
-        /**
-         * @var string
-         */
-        private $fileExtension;
+        /** @var string[] */
+        private array $parts;
 
         /**
          * @param string $path
@@ -67,20 +55,14 @@
         function __construct (bool $absolute, bool $hasTail, string $fileExtension, string ...$parts) {
             $this->absolute = $absolute;
             $this->hasTail = $hasTail;
-            $this->parts = $parts;
             $this->fileExtension = $fileExtension;
+            $this->parts = $parts;
         }
 
-        /**
-         * @return bool
-         */
         function isAbsolute () : bool {
             return $this->absolute;
         }
 
-        /**
-         * @return bool
-         */
         function hasTail () : bool {
             return $this->hasTail;
         }
@@ -122,7 +104,7 @@
          * This might be dangerous in some cases, e.g. when allowing multiple slashes
          * in a URI that has no authority part
          *
-         * (It would allow XSS or open redirects by omitting the scheme, but setting a new
+         * (It would allow XSS or open redirects by omitting the scheme by setting a new
          * authority like `//malicious-website.com/foo/bar`).
          *
          * @see https://framework.zend.com/security/advisory/ZF2015-05.html
@@ -155,10 +137,6 @@
             return $this->compose();
         }
 
-        /**
-         * @param string $part
-         * @return string
-         */
         private function encodePathPart (string $part) : string {
             // To ensure compliance to php-http/psr7-integration-tests, we have to lowercase all replaced url entities
             // PSR-7 itself does not specify this and allows upper- as well as lowercase
