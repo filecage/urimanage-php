@@ -48,6 +48,8 @@
                     Component::HOST => $this->host = Parse::parseHost($value),
                     Component::PATH => $this->path = Parse::parsePath($value),
                     Component::QUERY => $this->query = Parse::parseQuery($value),
+                    Component::USER => $this->user = Parse::parseUserInfo($value),
+                    Component::PASS => $this->pass = Parse::parseUserInfo($value),
                     default => $this->$component = $value
                 };
             }
@@ -266,8 +268,8 @@
             }
 
             $instance = clone $this;
-            $instance->user = ($user !== '') ? $user : null;
-            $instance->pass = ($password !== '') ? $password : null;
+            $instance->user = ($user !== '') ? Parse::parseUserInfo($user) : null;
+            $instance->pass = ($password !== '') ? Parse::parseUserInfo($password) : null;
 
             return $instance;
         }
