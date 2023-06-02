@@ -1,16 +1,15 @@
 <?php
 
-    namespace UriManage;
+    namespace UriManage\Actions;
 
     use InvalidArgumentException;
     use UriManage\Components\Path;
     use UriManage\Components\Query;
-    use UriManage\Constants\Component;
 
     /**
      * @internal
      */
-    class UriParser {
+    final class Parse {
         static function parseHost (string $host) : string {
             return strtolower($host);
         }

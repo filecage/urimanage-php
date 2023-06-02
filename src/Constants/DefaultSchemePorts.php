@@ -1,11 +1,11 @@
 <?php
 
-    namespace UriManage;
+    namespace UriManage\Constants;
 
     /**
      * @internal
      */
-    class DefaultSchemePorts {
+    final class DefaultSchemePorts {
 
         const SCHEME_TO_PORT = [
             'http' => 80,

@@ -3,12 +3,14 @@
     namespace UriManage;
 
     use InvalidArgumentException;
-    use Stringable;
     use Psr\Http\Message\UriInterface;
+    use Stringable;
     use UriManage\Actions\Compose;
+    use UriManage\Actions\Parse;
     use UriManage\Components\Path;
     use UriManage\Components\Query;
     use UriManage\Constants\Component;
+    use UriManage\Constants\DefaultSchemePorts;
     use UriManage\Exceptions\UriException;
 
     class Uri implements UriInterface {
@@ -43,9 +45,9 @@
             foreach ($uriComponents as $component => $value) {
                 /** @psalm-suppress InvalidScalarArgument TODO: Remove when psalm supports `ArrayShape` attribute */
                 match ($component) {
-                    Component::HOST => $this->host = UriParser::parseHost($value),
-                    Component::PATH => $this->path = UriParser::parsePath($value),
-                    Component::QUERY => $this->query = UriParser::parseQuery($value),
+                    Component::HOST => $this->host = Parse::parseHost($value),
+                    Component::PATH => $this->path = Parse::parsePath($value),
+                    Component::QUERY => $this->query = Parse::parseQuery($value),
                     default => $this->$component = $value
                 };
             }
@@ -160,7 +162,7 @@
             }
 
             $instance = clone $this;
-            $instance->query = ($query === '') ? null : (($query instanceof Query) ? $query : UriParser::parseQuery($query));
+            $instance->query = ($query === '') ? null : (($query instanceof Query) ? $query : Parse::parseQuery($query));
 
             return $instance;
         }
@@ -182,7 +184,7 @@
             if ($host === '') {
                 $instance->host = null;
             } else {
-                $instance->host = UriParser::parseHost($host);
+                $instance->host = Parse::parseHost($host);
             }
 
             return $instance;
@@ -200,7 +202,7 @@
             }
 
             $instance = clone $this;
-            $instance->path = ($path instanceof Path) ? $path : UriParser::parsePath($path);
+            $instance->path = ($path instanceof Path) ? $path : Parse::parsePath($path);
 
             return $instance;
         }
